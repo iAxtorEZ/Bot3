@@ -1,0 +1,255 @@
+local targetName = "iAxtorEZ"
+
+local own = "iAxtorEZ"
+
+local plr = nil
+
+local connection1 -- leaving
+
+for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+    if string.sub(v.Name:lower(), 1, #targetName) == targetName:lower() then
+        plr = v
+    end
+end
+
+local rs = game:GetService("RunService")
+
+local t = 0
+
+_G.Sp = .5
+
+_G.Loop = true
+
+local change = "change"
+
+local equip = "equip"
+
+local tp = "tp"
+
+local kill = "kill"
+
+local bring = "bring"
+
+local pbring = "pbring"
+
+local daya = "daya"
+
+local function jump()
+    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Sit = false
+end
+
+local function talk(message)
+     game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(tostring(message),"All")
+end
+
+connection1 = plr.Chatted:Connect(function(msg)
+    if string.lower(msg) == "false" then
+        _G.Loop = false
+    elseif string.lower(msg) == "true" then
+        _G.Loop = true
+
+        while rs.Heartbeat:Wait() and _G.Loop == true and plr.Character do
+            t += .5
+        
+            local x = math.sin(t) * 10
+            local y = 0
+            local z = math.cos(t) * 10
+        
+            local hrp = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            local thrp = plr.Character:FindFirstChild("HumanoidRootPart")
+        
+            jump()
+            hrp.CFrame = thrp.CFrame * CFrame.new(x,y,z)
+        end
+    elseif string.sub(msg:lower(),1,#change) == change:lower() then
+        local target = string.sub(msg,#change + 2,#msg)
+
+        if target then
+            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+                if string.sub(v.Name:lower(), 1, #target) == target:lower() then
+                    plr = v
+                end
+            end
+        end
+    elseif string.lower(msg) == "jump" then
+        game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Jump = true
+    elseif string.lower(msg) == "unequip" then
+
+        game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):UnequipTools()
+
+    elseif string.sub(msg:lower(),1,#equip) == equip:lower() then
+
+        local all = game:GetService("Players").LocalPlayer.Backpack:GetChildren()
+        local num = tonumber(string.sub(msg,#equip + 2,#msg))
+
+        if all[num] then
+            repeat wait() until game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
+            
+            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):EquipTool(all[num])
+        end
+
+    elseif string.lower(msg) == "bring" then
+        jump()
+        task.wait(.2)
+        _G.Loop = false
+        game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(own).Character:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,-2)
+
+    elseif string.sub(msg:lower(),1,#tp) == tp:lower() then
+        local target = string.sub(msg,#tp + 2,#msg)
+
+        if target then
+            if target == "random" then
+                local ali = game:GetService("Players"):GetChildren()
+
+                local chosen = ali[math.random(1,#ali)]
+
+                jump()
+
+                task.wait(.1)
+                
+                game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = chosen.Character:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,-2)
+            end
+            
+            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+                if string.sub(v.Name:lower(), 1, #target) == target:lower() then
+                    jump()
+                    task.wait(.1)
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = v.Character:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,-2)
+                end
+            end
+        end
+        
+    elseif string.sub(msg:lower(),1,#kill) == kill:lower() then
+
+        local target = string.sub(msg,#kill + 2,#msg)
+
+        if target then
+
+            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+                if string.sub(v.Name:lower(), 1, #target) == target:lower() then
+                    if v.Character:FindFirstChild("Humanoid").Sit == true then 
+                        return talk(v.Name.." Is Sitting")
+                    end
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):UnequipTools()
+
+                    _G.Loop = false
+
+                    task.wait(1)
+
+                    _G.Loop = true
+
+                    for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                        if v.Name == "Couch" then
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):EquipTool(v)
+                        end
+                    end
+
+                    while rs.Heartbeat:Wait() and _G.Loop == true and plr.Character do
+                        if v.Character:FindFirstChild("Humanoid").Sit == true then break; end
+                        
+                        t += 2
+                    
+                        local x = 0
+                        local y = -2.5
+                        local z = math.sin(t) * 15
+                    
+                        local hrp = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        local thrp = v.Character:FindFirstChild("HumanoidRootPart")
+                    
+                        jump()
+                        hrp.CFrame = thrp.CFrame * CFrame.new(x,y,z)
+                    end
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(0,-300,0)
+
+                    task.wait(1)
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):UnequipTools()
+
+                    task.wait(.1)
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(own).Character:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,-2)
+                end
+            end
+        end
+
+    elseif string.sub(msg:lower(),1,#pbring) == pbring:lower() then
+
+        local target = string.sub(msg,#pbring + 2,#msg)
+
+        if target then
+
+            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+                if string.sub(v.Name:lower(), 1, #target) == target:lower() then
+                    if v.Character:FindFirstChild("Humanoid").Sit == true then 
+                        return talk(v.Name.." Is Sitting")
+                    end
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):UnequipTools()
+
+                    _G.Loop = false
+
+                    task.wait(1)
+
+                    _G.Loop = true
+
+                    for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                        if v.Name == "Couch" then
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):EquipTool(v)
+                        end
+                    end
+
+                    while rs.Heartbeat:Wait() and _G.Loop == true and plr.Character do
+                        if v.Character:FindFirstChild("Humanoid").Sit == true then break; end
+                        
+                        t += 2
+                    
+                        local x = 0
+                        local y = -2.5
+                        local z = math.sin(t) * 15
+                    
+                        local hrp = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        local thrp = v.Character:FindFirstChild("HumanoidRootPart")
+
+                        jump()
+                        hrp.CFrame = thrp.CFrame * CFrame.new(x,y,z)
+                    end
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(own).Character:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,-6)
+
+                    task.wait(1)
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid"):UnequipTools()
+
+                    task.wait(.1)
+
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(own).Character:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,-2)
+                end
+            end
+        end
+    elseif string.sub(msg:lower(),1,#daya) == daya:lower() then
+        
+    end
+end)
+
+plr.CharacterRemoving:Connect(function()
+    if connection1 ~= nil and connection2 ~= nil then
+        connection1:Disconnect()
+        connection2:Disconnect()
+        return
+    end
+end)
+
+while rs.Heartbeat:Wait() and _G.Loop == true and plr.Character do
+    t += .5
+    local x = math.sin(t) * 10
+    local y = 0
+    local z = math.cos(t) * 10
+
+    local hrp = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local thrp = plr.Character:FindFirstChild("HumanoidRootPart")
+
+    jump()
+    hrp.CFrame = thrp.CFrame * CFrame.new(x,y,z)
+end
