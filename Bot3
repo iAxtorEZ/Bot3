@@ -275,7 +275,7 @@ connection1 = plr.Chatted:Connect(function(msg)
 
             task.wait(1)
 
-            while rs.Heartbeat:Wait() and task.wait(.5) and _G.Spam == true do
+            while rs.Heartbeat:Wait() and task.wait(1) and _G.Spam == true do
                 local args = {
                     [1] = tostring(message),
                     [2] = "All"
