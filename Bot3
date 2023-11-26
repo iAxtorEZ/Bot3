@@ -244,11 +244,13 @@ connection1 = plr.Chatted:Connect(function(msg)
                         return talk(v.Name.." Is Sitting")
                      end
 
-                     while rs.Heartbeat:Wait() and _G.Loop == true and plr.Character do
+                     
+                    while rs.Heartbeat:Wait() and _G.Loop == true and plr.Character do
+                        
                         t += 2
                     
                         local x = 0
-                        local y = 0
+                        local y = -2.5
                         local z = math.sin(t) * 15
                     
                         local hrp = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -257,6 +259,7 @@ connection1 = plr.Chatted:Connect(function(msg)
                         jump()
                         hrp.CFrame = thrp.CFrame * CFrame.new(x,y,z)
                     end
+
                 end
             end
         end
