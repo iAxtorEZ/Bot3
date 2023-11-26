@@ -230,7 +230,12 @@ connection1 = plr.Chatted:Connect(function(msg)
         end
     elseif string.sub(msg:lower(),1,#daya) == daya:lower() then
         local target = string.sub(msg,#daya + 2,#msg)
+
         _G.Loop = false
+
+        task.wait(1)
+
+        _G.Loop = true
 
         if target then
             for i,v in pairs(game:GetService("Players"):GetPlayers()) do
