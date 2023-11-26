@@ -19,6 +19,7 @@ local t = 0
 _G.Sp = .5
 
 _G.Loop = true
+_G.Spam = false
 
 local change = "change"
 
@@ -34,6 +35,8 @@ local pbring = "pbring"
 
 local daya = "daya"
 
+local spamchat = "spamchat"
+
 local function jump()
     game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Sit = false
 end
@@ -45,6 +48,7 @@ end
 connection1 = plr.Chatted:Connect(function(msg)
     if string.lower(msg) == "false" then
         _G.Loop = false
+        _G.Spam = false
     elseif string.lower(msg) == "true" then
         _G.Loop = true
 
@@ -263,6 +267,25 @@ connection1 = plr.Chatted:Connect(function(msg)
                 end
             end
         end
+    elseif string.sub(msg:lower(),1,#spamchat) == spamchat:lower() then
+        local message = string.sub(msg, #spamchat + 2, #msg)
+
+        if message then
+            _G.Spam = true
+
+            task.wait(1)
+
+            while rs.Heartbeat:Wait() and task.wait(.5) and _G.Spam == true do
+                local args = {
+                    [1] = tostring(message),
+                    [2] = "All"
+                }
+                
+                game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
+            end
+
+        end
+
     end
 end)
 
