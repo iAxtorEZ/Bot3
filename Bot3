@@ -48,6 +48,7 @@ end
 connection1 = plr.Chatted:Connect(function(msg)
     if string.lower(msg) == "false" then
         _G.Loop = false
+    elseif string.lower(msg) == "stopspam" then
         _G.Spam = false
     elseif string.lower(msg) == "true" then
         _G.Loop = true
